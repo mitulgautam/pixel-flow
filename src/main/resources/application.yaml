@@ -1,3 +1,11 @@
 spring:
   application:
     name: pixel-flow
+rabbit-mq:
+  credential:
+    host: localhost
+    username: pixelflow
+    password: pixelflow
+  exchange: EXG_PIXEL_FLOW
+  queue: image-tasks
+  routing-key: image.upload.*
