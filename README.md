@@ -88,3 +88,12 @@ This project serves as a technical demonstration of:
 1.  **Microservices Communication:** Using RabbitMQ Topic Exchanges.
 2.  **System Resilience:** Handling failures with Dead Letter Queues.
 3.  **Resource Optimization:** Efficient JVM memory management during heavy I/O.
+
+
+
+
+**How to use it**
+
+Launch the service: Run docker-compose up -d in the directory where you saved the file.
+Access the Dashboard: Open your browser and go to http://localhost:15672.
+Log in: Use the credentials defined in the environment section (default: pixelflow / pixelflow).
