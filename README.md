@@ -97,3 +97,14 @@ This project serves as a technical demonstration of:
 Launch the service: Run docker-compose up -d in the directory where you saved the file.
 Access the Dashboard: Open your browser and go to http://localhost:15672.
 Log in: Use the credentials defined in the environment section (default: pixelflow / pixelflow).
+
+
+
+# This creates 10 parallel "workers" on your machine sending requests as fast as possible
+seq 1000 | xargs -I % -P 10 curl --location 'localhost:8080/image-processing/upload' \
+--form 'images=@"/Users/ng/Documents/3840_compress.jpeg"' \
+--form 'images=@"/Users/ng/Documents/4978202. Blue (Arizona Blue).jpg"' \
+--form 'images=@"/Users/ng/Documents/AnikaAadhar.jpg"' \
+--form 'images=@"/Users/ng/Documents/AnikaPanCard.jpg"' \
+--form 'images=@"/Users/ng/Documents/Gemini_Generated_Image_n7cludn7cludn7cl.jpg"' \
+--form 'images=@"/Users/ng/Documents/banner-wmc.png"'
