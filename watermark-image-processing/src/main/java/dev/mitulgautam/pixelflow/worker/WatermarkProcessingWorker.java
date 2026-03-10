@@ -1,3 +1,5 @@
+package dev.mitulgautam.pixelflow.worker;
+
 import com.rabbitmq.client.*;
 import com.rabbitmq.client.impl.DefaultCredentialsProvider;
 import net.coobird.thumbnailator.Thumbnails;
@@ -18,7 +20,7 @@ public class WatermarkProcessingWorker {
         connectionFactory.setHost(System.getenv().getOrDefault("RABBITMQ_HOST", "localhost"));
         connectionFactory.setCredentialsProvider(new DefaultCredentialsProvider("pixelflow", "pixelflow"));
 
-        Connection connection = null;
+        Connection connection;
         try {
             connection = connectionFactory.newConnection();
             Channel channel = connection.createChannel();
