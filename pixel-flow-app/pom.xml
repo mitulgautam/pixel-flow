@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.mitulgautam</groupId>
-	<artifactId>pixel-flow</artifactId>
+	<artifactId>pixel-flow-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>pixel-flow</name>
-	<description>For an image processing project, you should build an Asynchronous Image Transformation Pipeline.</description>
+    <packaging>jar</packaging>
+    <name>pixel-flow-app</name>
+	<description>Main application for Pixel Flow</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -21,11 +21,6 @@
 	<developers>
 		<developer/>
 	</developers>
-    <modules>
-        <module>pixel-flow-app</module>
-        <module>watermark-image-processing</module>
-		<module>sizing-image-processing</module>
-	</modules>
     <scm>
 		<connection/>
 		<developerConnection/>

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeoutException;
 public class WatermarkProcessingWorker {
     public static void main(String[] s) {
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("localhost");
+        connectionFactory.setHost(System.getenv().getOrDefault("RABBITMQ_HOST", "localhost"));
         connectionFactory.setCredentialsProvider(new DefaultCredentialsProvider("pixelflow", "pixelflow"));
 
         Connection connection = null;
@@ -43,7 +43,8 @@ public class WatermarkProcessingWorker {
             try {
                 String imagePath = doWork(message);
                 channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
-                channel.basicPublish("", "size-processing", MessageProperties.PERSISTENT_TEXT_PLAIN, imagePath.getBytes(StandardCharsets.UTF_8));
+                channel.basicPublish("", "size-processing", MessageProperties.PERSISTENT_TEXT_PLAIN,
+                        imagePath.getBytes(StandardCharsets.UTF_8));
             } catch (IOException e) {
                 System.out.println(" [x] Failed due to reason. " + e);
                 channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
@@ -59,10 +60,15 @@ public class WatermarkProcessingWorker {
         String fileName = path.getFileName().toString();
         System.out.println("[X] Watermarking " + fileName);
         String directory = path.getParent().toString();
-        // For now, I will be creating /watermarked folder manually.
-        File outputFile = new File(directory, "watermarked/" + fileName);
+        // Create folder if it doesn't exist
+        File outputDir = new File(directory, "watermarked");
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
+        }
+        File outputFile = new File(outputDir, fileName);
 
-        BufferedImage fullSizeLogo = ImageIO.read(new File("src/main/resources/wmc-logo.png"));
+        BufferedImage fullSizeLogo = ImageIO
+                .read(new File(System.getenv().getOrDefault("LOGO_PATH", "src/main/resources/wmc-logo.png")));
         BufferedImage logo = Thumbnails.of(fullSizeLogo)
                 .width(200)
                 .keepAspectRatio(true)

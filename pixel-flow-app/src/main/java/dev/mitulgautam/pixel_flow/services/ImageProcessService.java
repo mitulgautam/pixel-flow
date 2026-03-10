@@ -23,12 +23,21 @@ import java.util.stream.Collectors;
 
 @Service
 public class ImageProcessService {
-    private final Path fileStorageLocation = Paths.get("/Users/ng/Desktop/pixelflow").toAbsolutePath().normalize();
+    private final Path fileStorageLocation = Paths.get(System.getenv().getOrDefault("FILE_STORAGE_PATH", "/tmp/pixelflow")).toAbsolutePath().normalize();
     ConnectionFactory factory = new ConnectionFactory();
 
     public ImageProcessService() {
-        factory.setHost("localhost");
+        factory.setHost(System.getenv().getOrDefault("RABBITMQ_HOST", "localhost"));
         factory.setCredentialsProvider(new DefaultCredentialsProvider("pixelflow", "pixelflow"));
+        
+        // Ensure storage directory exists
+        try {
+            if (!Files.exists(fileStorageLocation)) {
+                Files.createDirectories(fileStorageLocation);
+            }
+        } catch (IOException e) {
+            System.err.println("Could not create storage directory: " + e.getMessage());
+        }
     }
 
     public void sendImageForProcessing(MultipartFile[] files) {

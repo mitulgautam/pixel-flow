@@ -12,7 +12,7 @@ import java.util.concurrent.TimeoutException;
 public class SizeProcessingWorker {
     public static void main(String[] s) {
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("localhost");
+        connectionFactory.setHost(System.getenv().getOrDefault("RABBITMQ_HOST", "localhost"));
         connectionFactory.setCredentialsProvider(new DefaultCredentialsProvider("pixelflow", "pixelflow"));
 
         Connection connection = null;
@@ -38,7 +38,7 @@ public class SizeProcessingWorker {
 
             try {
                 doWork(message);
-//                channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                // channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             } finally {
                 System.out.println(" [x] Done");
                 channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
@@ -54,8 +54,12 @@ public class SizeProcessingWorker {
         String fileName = path.getFileName().toString();
         System.out.println("[X] Sizing " + fileName);
         String directory = path.getParent().toString();
-        // For now, I will be creating /sized folder manually.
-        File outputFile = new File(directory, "sized/" + fileName);
+        // Create folder if it doesn't exist
+        File outputDir = new File(directory, "sized");
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
+        }
+        File outputFile = new File(outputDir, fileName);
         Thumbnails.of(imagePath)
                 .size(200, 200)
                 .toFile(outputFile);

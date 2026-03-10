@@ -12,5 +12,46 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  pixel-flow-app:
+    build:
+      context: .
+      dockerfile: pixel-flow-app/Dockerfile
+    container_name: pixel-flow-app
+    ports:
+      - "8080:8080"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - FILE_STORAGE_PATH=/data/pixelflow
+    volumes:
+      - image_data:/data/pixelflow
+    depends_on:
+      - rabbitmq
+
+  sizing-worker:
+    build:
+      context: .
+      dockerfile: sizing-image-processing/Dockerfile
+    container_name: sizing-worker
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    volumes:
+      - image_data:/data/pixelflow
+    depends_on:
+      - rabbitmq
+
+  watermark-worker:
+    build:
+      context: .
+      dockerfile: watermark-image-processing/Dockerfile
+    container_name: watermark-worker
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - LOGO_PATH=/app/resources/wmc-logo.png
+    volumes:
+      - image_data:/data/pixelflow
+    depends_on:
+      - rabbitmq
+
 volumes:
   rabbitmq_data:
+  image_data:
