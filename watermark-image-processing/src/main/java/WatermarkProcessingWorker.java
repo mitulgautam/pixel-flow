@@ -1,5 +1,3 @@
-package dev.mitulgautam.pixel_flow.workers;
-
 import com.rabbitmq.client.*;
 import com.rabbitmq.client.impl.DefaultCredentialsProvider;
 import net.coobird.thumbnailator.Thumbnails;

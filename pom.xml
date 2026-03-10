@@ -11,7 +11,8 @@
 	<groupId>dev.mitulgautam</groupId>
 	<artifactId>pixel-flow</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>pixel-flow</name>
+    <packaging>pom</packaging>
+    <name>pixel-flow</name>
 	<description>For an image processing project, you should build an Asynchronous Image Transformation Pipeline.</description>
 	<url/>
 	<licenses>
@@ -20,7 +21,11 @@
 	<developers>
 		<developer/>
 	</developers>
-	<scm>
+    <modules>
+        <module>watermark-image-processing</module>
+		<module>sizing-image-processing</module>
+	</modules>
+    <scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>
